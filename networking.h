@@ -14,7 +14,7 @@
 #define NETWORKING_H
 
 #define SERVER_IP NULL
-#define CLIENT_IP "149.89.150.119"
+#define CLIENT_IP "127.0.0.1"
 #define PORT "9001"
 
 #define HANDSHAKE_BUFFER_SIZE 10
