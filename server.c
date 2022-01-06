@@ -1,6 +1,6 @@
 #include <signal.h>
 
-#include "pipe_networking.h"
+#include "networking.h"
 
 void process(char *);
 void quick(char *, int, int);
@@ -18,18 +18,18 @@ static void sighandler(int signo)
 int main() {
 	signal(SIGINT, sighandler);
 
-    int server = server_setup(SERVER_IP, SERVER_PORT);
+    int server = server_setup(SERVER_IP, PORT);
 
     if (server == -1)
     {
         return -1;
     }
 
-    printf("[%d] : [Server setup]", getpid());
+    printf("[%d] : [Server setup]\n", getpid());
 
     while (1)
 	{
-        printf("[%d] : [Main server accepting new client]", getpid());
+        printf("[%d] : [Main server accepting new client]\n", getpid());
 
         int connection;
 		int c = server_fork(server, &connection);
@@ -42,7 +42,7 @@ int main() {
 
         if (c == 0)
         {
-            printf("[%d] : [Subserver connected]", getpid());
+            printf("[%d] : [Subserver connected]\n", getpid());
 
             char input[BUFFER_SIZE];
             while (read(connection, input, BUFFER_SIZE) > 0)
@@ -51,16 +51,13 @@ int main() {
 
                 if (write(connection, input, BUFFER_SIZE) == -1)
                 {
-                    printf("%s\n", strerror(errno));
+                    printf("[%d] : [%s]\n", getpid(), strerror(errno));
                 }
             }
 
             printf("Client exited\n");
             exit(0);
         }
-
-		close(from_client);
-		close(to_client);
 	}
 
 	return 0;

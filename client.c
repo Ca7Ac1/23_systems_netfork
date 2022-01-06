@@ -1,11 +1,8 @@
-#include "pipe_networking.h"
+#include "networking.h"
 
 int main() {
-	int to_server;
-  	int from_server;
-
-	from_server = client_handshake(&to_server);
-	if (from_server == -1)
+	int connection = client(CLIENT_IP, PORT);
+	if (connection == -1)
 	{
 		return -1;
 	}
@@ -23,8 +20,9 @@ int main() {
 			break;
 		}
 
-		write(to_server, input, sizeof(input));
-		read(from_server, input, sizeof(input));
+		write(connection, input, sizeof(input));
+		read(connection, input, sizeof(input));
 
 		printf("\nMessage recieved from server: %s\n", input);
 	}
+}
